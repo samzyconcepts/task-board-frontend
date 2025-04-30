@@ -1,4 +1,10 @@
 <script setup>
+import { defineProps } from 'vue'
+
+defineProps({
+  name: String,
+  description: String,
+})
 const handleEdit = () => {
   console.log('Edit icon clicked')
 };
@@ -23,8 +29,8 @@ const handleEdit = () => {
       ></path>
     </svg>
     <div>
-      <h1 class="text-5xl">My Task Board</h1>
-      <p class="text-xl">Tasks to keep organised</p>
+      <h1 class="text-5xl">{{ name }}</h1>
+      <p class="text-xl">{{ description }}</p>
     </div>
     <div
       @click.prevent="handleEdit"

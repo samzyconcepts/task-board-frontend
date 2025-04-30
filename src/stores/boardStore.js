@@ -17,19 +17,19 @@ export const useBoardStore = defineStore('board', () => {
     error.value = null
     try {
       const response = await axios.get(`/boards/${id}`)
-      board.value = response.data
+      board.value = response.data.board
     } catch (err) {
       error.value = err.response.data.message || 'An error occurred'
     } finally {
       loading.value = false
     }
   }
-  const createBoard = async (newBoard) => {
+  const createBoard = async () => {
     loading.value = true
     error.value = null
     try {
-      const response = await axios.post('/boards', newBoard)
-      board.value = response.data
+      const response = await axios.post('/boards')
+      board.value = response.data.board
     } catch (err) {
       error.value = err.response.data.message || 'An error occurred'
     } finally {
