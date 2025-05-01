@@ -5,9 +5,12 @@ defineProps({
   name: String,
   description: String,
 })
+
+const emit = defineEmits(['edit'])
+
 const handleEdit = () => {
-  console.log('Edit icon clicked')
-};
+  emit('edit')
+}
 </script>
 
 <template>
@@ -33,7 +36,7 @@ const handleEdit = () => {
       <p class="text-xl">{{ description }}</p>
     </div>
     <div
-      @click.prevent="handleEdit"
+      @click="handleEdit"
       class="flex items-center justify-center w-8 cursor-pointer h-14"
     >
       <svg

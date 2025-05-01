@@ -1,24 +1,34 @@
 <script setup>
 // import AddTaskModal from './components/addTaskModal.vue';
-import { onBeforeUnmount, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import BoardHeader from './components/BoardHeader.vue'
 import SkeletonLoader from './components/SkeletonLoader.vue'
 import TasksContainer from './components/TasksContainer.vue'
 import { useBoardStore } from './stores/boardStore'
 import { storeToRefs } from 'pinia'
+import EditBoardModal from './components/editBoardModal.vue'
 
 const boardStore = useBoardStore()
 
 const { board, loading } = storeToRefs(boardStore)
+const isEditModalOpen = ref(false)
 
-onMounted(() => {
+const closeEditModal = () => {
+  isEditModalOpen.value = false
+}
+
+const openEditModal = () => {
+  isEditModalOpen.value = true
+}
+
+onMounted(async () => {
   let boardId = localStorage.getItem('boardId') || window.location.pathname.slice(1)
 
   try {
     // Check if boardId is valid
     if (!boardId) {
-      boardStore.createBoard()
-      boardId = board._id
+      const createBoardId = await boardStore.createBoard()
+      boardId = createBoardId
 
       // Save to localstorage and change url
       localStorage.setItem('boardId', boardId)
@@ -30,12 +40,12 @@ onMounted(() => {
   } catch (error) {
     console.error('Error fetching board:', error)
   }
-})
+});
 
 // Cleanup function to remove the boardId from localStorage
-onBeforeUnmount(() => {
-  localStorage.removeItem('boardId')
-});
+// onBeforeUnmount(() => {
+//   localStorage.removeItem('boardId')
+// });
 </script>
 
 <template>
@@ -60,8 +70,9 @@ onBeforeUnmount(() => {
     </div>
 
     <div v-else-if="board">
-      <BoardHeader :name="board.name" :description="board.description" />
+      <BoardHeader :name="board.name" :description="board.description" @edit="openEditModal" />
       <TasksContainer />
+      <EditBoardModal :isOpen="isEditModalOpen" @close="closeEditModal" />
       <!-- <AddTaskModal /> -->
     </div>
   </section>

@@ -3,12 +3,7 @@ import { ref } from 'vue'
 import axios from 'axios'
 
 export const useBoardStore = defineStore('board', () => {
-  const board = ref({
-    _id: null,
-    name: 'My Task Board',
-    description: 'Tasks to keep organised',
-    tasks: [],
-  })
+  const board = ref({})
   const loading = ref(false)
   const error = ref(null)
 
@@ -24,12 +19,15 @@ export const useBoardStore = defineStore('board', () => {
       loading.value = false
     }
   }
+
   const createBoard = async () => {
     loading.value = true
     error.value = null
     try {
       const response = await axios.post('/boards')
-      board.value = response.data.board
+      fetchBoard(response.data.id)
+
+      return response.data.id
     } catch (err) {
       error.value = err.response.data.message || 'An error occurred'
     } finally {

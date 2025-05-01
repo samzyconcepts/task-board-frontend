@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed inset-0 transition-opacity duration-300 ease-in-out bg-black/50">
+ <div class="fixed inset-0 transition-opacity duration-300 ease-in-out bg-black/50">
     <aside
       class="fixed top-0 right-0 h-screen w-[630px] p-3 bg-transparent transform transition-transform duration-300 ease-in-out"
     >
