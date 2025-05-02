@@ -49,19 +49,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!--
-      My Task Board
-      Tasks to keep organised
-      Enter a short description
-      In Progress
-      Completed
-      Won’t do
-      Task in Progress
-      Task Completed
-      Task Won’t Do
-      Task To Do
-      Add new task
-  -->
   <section class="grid items-center w-4/12 py-10 mx-auto">
     <div v-if="loading">
       <SkeletonLoader type="rectangle" bgClass="bg-gray-300" cssClass="h-24 mb-4 rounded" />
@@ -71,7 +58,7 @@ onMounted(async () => {
 
     <div v-else-if="board">
       <BoardHeader :name="board.name" :description="board.description" @edit="openEditModal" />
-      <TasksContainer />
+      <TasksContainer :boardId="board && board._id"/>
       <EditBoardModal :isOpen="isEditModalOpen" @close="closeEditModal" />
       <!-- <AddTaskModal /> -->
     </div>
