@@ -1,7 +1,7 @@
 <template>
   <label
     :for="`status-${value}`"
-    :class="`relative flex items-center gap-4 p-2 transition-all duration-300 border-2 border-gray-300 cursor-pointer rounded-xl ${isSelected ? 'border-blue-500' : ''} hover:bg-blue-100`"
+    :class="`relative flex items-center gap-4 p-2 transition-all duration-300 border-2  cursor-pointer rounded-xl hover:bg-gray-100 ${isSelected ? 'border-blue-500' : 'border-gray-300'}`"
     @click.prevent="$emit('select', value)"
   >
     <input

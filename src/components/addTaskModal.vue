@@ -1,10 +1,12 @@
 <script setup>
 import { defineProps, reactive, watch } from 'vue'
 import { useTaskStore } from '@/stores/TaskStore'
+import { useBoardStore } from '@/stores/boardStore';
 import SelectableIcon from './SelectableIcon.vue'
 import SelectableStatus from './SelectableStatus.vue'
 
 const taskStore = useTaskStore()
+const boardStore = useBoardStore()
 
 const props = defineProps({
   isOpen: {
@@ -36,10 +38,10 @@ const statusList = [
 
 // Form fields
 const form = reactive({
-  taskName: 'Task in Progress',
+  taskName: '',
   taskDescription: '',
-  taskStatus: 'inProgress',
-  taskIcon: 'clock',
+  taskStatus: '',
+  taskIcon: '',
 })
 
 // Populate field if editing
@@ -53,9 +55,9 @@ watch(
       form.taskStatus = task.status || ''
       form.taskIcon = task.icon || ''
     } else {
-      form.taskName = 'Task in Progress'
+      form.taskName = 'Task to do'
       form.taskDescription = ''
-      form.taskStatus = 'in-progress'
+      form.taskStatus = ''
       form.taskIcon = 'clock'
     }
   },
@@ -64,6 +66,28 @@ watch(
 
 function closeModal() {
   emit('close')
+}
+
+function handleSubmit() {
+  const taskData = {
+    title: form.taskName,
+    description: form.taskDescription,
+    status: form.taskStatus || 'todo',
+    icon: form.taskIcon,
+  }
+  if (props.taskId) {
+    taskStore.updateTask(props.taskId, taskData)
+  } else {
+    taskStore.createTask(taskData, boardStore.board._id)
+  }
+  closeModal()
+}
+
+function handleDelete() {
+  if (props.taskId) {
+    taskStore.deleteTask(props.taskId)
+    closeModal()
+  }
 }
 </script>
 
@@ -151,12 +175,13 @@ function closeModal() {
             <footer class="flex items-end justify-end w-full h-full gap-5 text-white">
               <button
                 v-if="props.taskId"
+                @click.prevent="handleDelete"
                 class="flex items-center gap-3 py-1 px-5 bg-[#3662E3] border-none rounded-2xl not-disabled:cursor-pointer disabled:bg-gray-300 cursor-default"
               >
                 Delete
                 <img src="../assets/Trash.svg" alt="Trash Icon" width="15" height="15" />
               </button>
-              <button
+              <button @click.prevent="handleSubmit"
                 class="flex items-center gap-3 py-1 px-5 bg-[#3662E3] border-none rounded-2xl cursor-pointer"
               >
                 Save
