@@ -7,7 +7,8 @@ import doneRound from '../assets/Done_round_duotone.svg'
 import dumbbell from '../assets/dumbbell.png'
 import teacup from '@/assets/teacup.png'
 import books from '@/assets/book.png'
-import laptop from '../assets/laptop.png'
+import laptop from '@/assets/laptop.png'
+import comment from '@/assets/comment.png'
 
 const props = defineProps({
   task: Object,
@@ -56,6 +57,8 @@ const iconPath = computed(() => {
       return books
     case 'laptop':
       return laptop
+    case 'comment':
+      return comment
     default:
       return ''
   }

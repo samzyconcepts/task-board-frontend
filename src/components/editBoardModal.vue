@@ -1,3 +1,58 @@
+<script setup>
+import { ref } from 'vue'
+import { useBoardStore } from '../stores/boardStore'
+import { storeToRefs } from 'pinia'
+import axios from 'axios'
+import { defineProps } from 'vue'
+
+defineProps({
+  isOpen: {
+    type: Boolean,
+    required: true,
+  },
+})
+
+const boardStore = useBoardStore()
+const { board } = storeToRefs(boardStore)
+const boardName = ref(board.value.name)
+const boardDescription = ref(board.value.description)
+const isSaving = ref(false)
+
+const emit = defineEmits(['close'])
+
+const closeModal = () => {
+  if (!isSaving.value) {
+    emit('close')
+  }
+}
+
+const handleSubmit = async () => {
+  try {
+    isSaving.value = true
+    if (!boardName.value || !boardDescription.value) {
+      alert('Please fill in all fields.')
+      return
+    }
+
+    const response = await axios.put(`/boards/${board.value._id}`, {
+      name: boardName.value,
+      description: boardDescription.value,
+    })
+
+    if (response.status === 200) {
+      boardStore.fetchBoard(board.value._id)
+      emit('close')
+    } else {
+      alert('Failed to update board.')
+    }
+  } catch (error) {
+    console.error('Error updating board:', error)
+  } finally {
+    isSaving.value = false
+  }
+};
+</script>
+
 <template>
   <div
     v-if="isOpen"
@@ -67,57 +122,3 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { useBoardStore } from '../stores/boardStore'
-import { storeToRefs } from 'pinia'
-import axios from 'axios'
-import { defineProps } from 'vue'
-
-defineProps({
-  isOpen: {
-    type: Boolean,
-    required: true,
-  },
-})
-
-const boardStore = useBoardStore()
-const { board } = storeToRefs(boardStore)
-const boardName = ref(board.value.name)
-const boardDescription = ref(board.value.description)
-const isSaving = ref(false)
-
-const emit = defineEmits(['close'])
-
-const closeModal = () => {
-  if (!isSaving.value) {
-    emit('close')
-  }
-}
-
-const handleSubmit = async () => {
-  try {
-    isSaving.value = true
-    if (!boardName.value || !boardDescription.value) {
-      alert('Please fill in all fields.')
-      return
-    }
-
-    const response = await axios.put(`/boards/${board.value._id}`, {
-      name: boardName.value,
-      description: boardDescription.value,
-    })
-
-    if (response.status === 200) {
-      boardStore.fetchBoard(board.value._id)
-      emit('close')
-    } else {
-      alert('Failed to update board.')
-    }
-  } catch (error) {
-    console.error('Error updating board:', error)
-  } finally {
-    isSaving.value = false
-  }
-}
-</script>

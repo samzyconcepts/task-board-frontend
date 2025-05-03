@@ -1,5 +1,4 @@
 <script setup>
-// import AddTaskModal from './components/addTaskModal.vue';
 import { onMounted, ref } from 'vue'
 import BoardHeader from './components/BoardHeader.vue'
 import SkeletonLoader from './components/SkeletonLoader.vue'
@@ -12,7 +11,7 @@ const boardStore = useBoardStore()
 
 const { board, loading } = storeToRefs(boardStore)
 const isEditModalOpen = ref(false)
-
+// import AddTaskModal from './components/addTaskModal.vue';
 const closeEditModal = () => {
   isEditModalOpen.value = false
 }
@@ -60,7 +59,6 @@ onMounted(async () => {
       <BoardHeader :name="board.name" :description="board.description" @edit="openEditModal" />
       <TasksContainer :boardId="board && board._id"/>
       <EditBoardModal :isOpen="isEditModalOpen" @close="closeEditModal" />
-      <!-- <AddTaskModal /> -->
     </div>
   </section>
 </template>
