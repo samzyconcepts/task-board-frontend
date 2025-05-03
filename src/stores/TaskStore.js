@@ -24,8 +24,13 @@ export const useTaskStore = defineStore('task', () => {
     }
   }
 
-  const createTask = async (title, description, status, icon, boardId) => {
-    if (!boardId || !title || !description || !status || !icon) {
+  const createTask = async (taskData, boardId) => {
+    const { title, description, status, icon } = taskData
+    if (!boardId) {
+      error.value = 'Board ID is required'
+      return
+    }
+    if (!boardId || !title || !icon) {
       error.value = 'All fields are required'
       return
     }
@@ -62,8 +67,9 @@ export const useTaskStore = defineStore('task', () => {
   }
 
 
-  const updateTask = async (taskId, title, description, status, icon) => {
-    if (!taskId || !title || !description || !status || !icon) {
+  const updateTask = async (taskId, taskData) => {
+    const { title, description, status, icon } = taskData
+    if (!taskId || !title || !icon) {
       error.value = 'All fields are required'
       return
     }
