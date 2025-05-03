@@ -2,6 +2,7 @@
 import { defineProps, reactive, watch } from 'vue'
 import { useTaskStore } from '@/stores/TaskStore'
 import SelectableIcon from './SelectableIcon.vue'
+import SelectableStatus from './SelectableStatus.vue'
 
 const taskStore = useTaskStore()
 
@@ -25,6 +26,12 @@ const iconList = [
   { value: 'dumbbell', src: 'src/assets/dumbbell.png', alt: 'dumbbell', size: 25 },
   { value: 'books', src: 'src/assets/book.png', alt: 'books', size: 25 },
   { value: 'clock', src: 'src/assets/clock.png', alt: 'clock', size: 25 },
+]
+
+const statusList = [
+  { value: 'in-progress', label: 'In Progress', src: 'src/assets/Time_atack_duotone.svg' },
+  { value: 'completed', label: 'Completed', src: 'src/assets/Done_round_duotone.svg' },
+  { value: "won't do", label: "Won't do", src: 'src/assets/close_ring_duotone-1.svg' },
 ]
 
 // Form fields
@@ -128,76 +135,17 @@ function closeModal() {
 
             <div class="flex flex-col w-full mb-3">
               <p class="mb-2 text-sm text-gray-400">Status</p>
-              <div class="flex flex-wrap gap-3">
-                <label
-                  class="w-[260px] cursor-pointer flex rounded-xl p-[2px] border border-gray-300 items-center gap-2 relative transition-colors duration-300"
-                >
-                  <div class="p-2 bg-amber-400/80 rounded-xl">
-                    <img
-                      src="../assets/Time_atack_duotone.svg"
-                      alt="icon wait"
-                      width="{25}"
-                      height="{25}"
-                    />
-                  </div>
-                  <input
-                    id="status-wait"
-                    name="status"
-                    type="radio"
-                    value="in-progress"
-                    class="absolute radio-input top-4 right-5"
-                  />
-                  <label htmlFor="status-wait" class="cursor-pointer radio-label"
-                    >In Progress</label
-                  >
-                </label>
-
-                <label
-                  class="w-[260px] cursor-pointer flex rounded-xl p-[2px] border border-gray-300 items-center gap-2 relative transition-colors duration-300"
-                >
-                  <div class="p-2 bg-green-400/80 rounded-xl">
-                    <img
-                      src="../assets/Done_round_duotone.svg"
-                      alt="icon done"
-                      width="{25}"
-                      height="{25}"
-                    />
-                  </div>
-                  <input
-                    id="status-done"
-                    name="status"
-                    type="radio"
-                    value="completed"
-                    class="absolute radio-input top-4 right-5"
-                  />
-                  <label htmlFor="status-done" class="cursor-pointer radio-label">
-                    Completed
-                  </label>
-                </label>
-
-                <label
-                  class="w-[260px] cursor-pointer flex rounded-xl p-[2px] border border-gray-300 items-center gap-2 relative transition-colors duration-300"
-                >
-                  <div class="p-2 bg-red-500 rounded-xl">
-                    <img
-                      src="../assets/close_ring_duotone-1.svg"
-                      alt="icon done"
-                      width="{25}"
-                      height="{25}"
-                    />
-                  </div>
-                  <input
-                    id="status-dont"
-                    name="status"
-                    type="radio"
-                    value="won't do"
-                    class="absolute radio-input top-5 right-5"
-                  />
-                  <label htmlFor="status-dont" className="radio-label cursor-pointer"
-                    >Won&apos;t do</label
-                  >
-                </label>
-              </div>
+              <fieldset class="flex flex-wrap gap-3" role="radiogroup" aria-label="Task Status">
+                <SelectableStatus
+                  v-for="status in statusList"
+                  :key="status.value"
+                  :value="status.value"
+                  :label="status.label"
+                  :src="status.src"
+                  :isSelected="form.taskStatus === status.value"
+                  @select="form.taskStatus = $event"
+                />
+              </fieldset>
             </div>
 
             <footer class="flex items-end justify-end w-full h-full gap-5 text-white">
@@ -227,15 +175,3 @@ function closeModal() {
     </aside>
   </div>
 </template>
-
-<!-- fixed inset-0 bg-black/30 transition-opacity duration-300 ease-in-out ${showSidebar ? 'opacity-100' : 'opacity-0 pointer-events-none'
-
-fixed top-0 right-0 h-screen w-[630px] p-3 bg-transparent transform transition-transform duration-300 ease-in-out ${showSidebar ? 'translate-x-0' : 'translate-x-full'
-
-
-Status
-{`w-[260px]  cursor-pointer flex rounded-xl p-[2px]  border border-gray-300  items-center gap-2 relative cursor-pointer transition-colors duration-300 ${status === 'inProgress' || existingData.taskStatus === 'inProgress' ? 'border-[#3662E3] ring-2 ring-[#3662E3]' : ''}`}
-
-checked={status === 'inProgress' || existingData.taskStatus === 'inProgress'}
-                                            onChange={handleChange}
--->
