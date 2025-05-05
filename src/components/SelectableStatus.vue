@@ -1,7 +1,7 @@
 <template>
   <label
     :for="`status-${value}`"
-    :class="`relative flex items-center gap-4 p-2 transition-all duration-300 border-2  cursor-pointer rounded-xl hover:bg-gray-100 ${isSelected ? 'border-blue-500' : 'border-gray-300'}`"
+    :class="`relative flex items-center gap-4 p-2 transition-all duration-300 border-2  cursor-pointer rounded-xl hover:bg-gray-100 justify-between ${isSelected ? 'border-blue-500' : 'border-gray-300'}`"
     @click.prevent="$emit('select', value)"
   >
     <input
@@ -22,7 +22,7 @@
     </div>
 
     <div
-      class="flex items-center justify-center w-5 h-5 border-2 rounded-full peer-checked:border-blue-600 peer-checked:bg-blue-600"
+      class="flex items-center justify-center w-5 h-5 rounded-full peer-checked:border-blue-600 peer-checked:bg-blue-600"
     >
       <img
         src="../assets/Done_round.svg"

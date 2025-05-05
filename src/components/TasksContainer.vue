@@ -5,6 +5,7 @@ import TaskCard from './TaskCard.vue'
 import { useTaskStore } from '@/stores/TaskStore'
 import { storeToRefs } from 'pinia'
 import AddTaskModal from './addTaskModal.vue'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
 
 const props = defineProps({
   boardId: String,
@@ -42,7 +43,14 @@ onMounted(async () => {
 
 <template>
   <section class="my-8 space-y-4">
-    <div v-if="loading">Loading Task</div>
+    <div v-if="loading">
+      <SkeletonLoader type="rectangle" bgClass="bg-gray-300" cssClass="h-24 mb-4 rounded" />
+      <SkeletonLoader class="h-2.5 w-48 mb-4" />
+      <SkeletonLoader class="h-2 mb-2.5" />
+      <SkeletonLoader type="rectangle" bgClass="bg-gray-300" cssClass="h-24 mb-4 rounded" />
+      <SkeletonLoader class="h-2.5 w-48 mb-4" />
+      <SkeletonLoader class="h-2 mb-2.5" />
+    </div>
     <div v-else v-for="task in tasks" v-bind:key="task._id">
       <TaskCard :task="task" @click="openModalWithTask(task._id)" />
     </div>
