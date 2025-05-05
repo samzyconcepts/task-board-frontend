@@ -1,5 +1,6 @@
 <script setup>
 import { defineProps } from 'vue'
+import { motion } from 'motion-v'
 
 defineProps({
   name: String,
@@ -11,11 +12,42 @@ const emit = defineEmits(['edit'])
 const handleEdit = () => {
   emit('edit')
 }
+
+const parentVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      staggerChildren: 0.3, // delay between each child
+      ease: 'easeIn',
+      type: 'spring',
+    },
+  },
+}
+
+const childVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+};
 </script>
 
 <template>
-  <header class="flex gap-2">
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <motion.header
+    tag="header"
+    :variants="parentVariants"
+    initial="initial"
+    animate="animate"
+    class="flex gap-2"
+  >
+    <motion.svg
+      :variants="childVariants"
+      tag="svg"
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+    >
       <path
         d="M16.3256 15.7191C18.3549 14.5476 21.645 14.5476 23.6742 15.7191L36.3256 23.0228C38.3548 24.1942 38.3548 26.0936 36.3256 27.2651L23.6742 34.5687C21.645 35.7402 18.3549 35.7402 16.3256 34.5687L3.6743 27.2651C1.64504 26.0936 1.64504 24.1942 3.6743 23.0228L16.3256 15.7191Z"
         fill="#E9A23B"
@@ -30,12 +62,13 @@ const handleEdit = () => {
         d="M16.3258 5.12118C18.355 3.94968 21.6451 3.94968 23.6744 5.12118L36.3257 12.4248C38.355 13.5963 38.355 15.4957 36.3257 16.6672L23.6744 23.9708C21.6451 25.1423 18.355 25.1423 16.3258 23.9708L3.67442 16.6671C1.64516 15.4957 1.64516 13.5963 3.67442 12.4248L16.3258 5.12118Z"
         fill="#E9A23B"
       ></path>
-    </svg>
-    <div>
-      <h1 class="text-5xl">{{ name }}</h1>
+    </motion.svg>
+    <motion.div :variants="childVariants">
+      <h1 class="overflow-hidden text-5xl whitespace-nowrap">{{ name }}</h1>
       <p class="text-xl">{{ description }}</p>
-    </div>
-    <div
+    </motion.div>
+    <motion.div
+      :variants="childVariants"
       @click="handleEdit"
       class="flex items-center justify-center w-8 cursor-pointer h-14"
     >
@@ -56,6 +89,6 @@ const handleEdit = () => {
           fill="#030616"
         ></path>
       </svg>
-    </div>
-  </header>
+    </motion.div>
+  </motion.header>
 </template>
