@@ -11,7 +11,7 @@ const boardStore = useBoardStore()
 
 const { board, loading } = storeToRefs(boardStore)
 const isEditModalOpen = ref(false)
-// import AddTaskModal from './components/addTaskModal.vue';
+
 const closeEditModal = () => {
   isEditModalOpen.value = false
 }
@@ -40,15 +40,10 @@ onMounted(async () => {
     console.error('Error fetching board:', error)
   }
 });
-
-// Cleanup function to remove the boardId from localStorage
-// onBeforeUnmount(() => {
-//   localStorage.removeItem('boardId')
-// });
 </script>
 
 <template>
-  <section class="grid items-center w-4/12 py-10 mx-auto">
+  <section class="grid items-center w-11/12 py-10 mx-auto md:w-8/12 lg:w-4/12">
     <div v-if="loading">
       <SkeletonLoader type="rectangle" bgClass="bg-gray-300" cssClass="h-24 mb-4 rounded" />
       <SkeletonLoader class="h-2.5 w-48 mb-4" />

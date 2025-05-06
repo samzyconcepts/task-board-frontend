@@ -87,6 +87,7 @@ const handleSubmit = async () => {
               :disabled="isSaving"
               required
               class="block w-full mt-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-2 focus:outline-[#E9A23B] focus:border-none p-2"
+              autofocus
             />
           </div>
           <div class="mb-4">

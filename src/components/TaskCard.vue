@@ -66,15 +66,15 @@ const iconPath = computed(() => {
 </script>
 
 <template>
-  <button class="w-full cursor-pointer">
+  <button class="w-full cursor-pointer rounded-xl ring-blue-500 ring-offset-1">
     <div :class="statusClasses">
       <div class="flex items-center gap-4">
         <div class="p-2 bg-white rounded-xl">
           <img width="25px" height="25px" :src="iconPath" :alt="icon" />
         </div>
         <div class="flex-col items-start">
-          <h2 class="text-xl font-bold text-left">{{ name }}</h2>
-          <p class="text-gray-700 max-w-[325px] text-start">{{ description }}</p>
+          <h2 class="text-lg font-bold text-left md:text-xl">{{ name }}</h2>
+          <p class="text-gray-700 max-w-[325px] text-start text-xs md:text-base">{{ description }}</p>
         </div>
       </div>
       <div v-if="status !== 'todo'" :class="statusRightIconClasses">

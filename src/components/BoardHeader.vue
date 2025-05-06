@@ -64,8 +64,8 @@ const childVariants = {
       ></path>
     </motion.svg>
     <motion.div :variants="childVariants">
-      <h1 class="overflow-hidden text-5xl whitespace-nowrap">{{ name }}</h1>
-      <p class="text-xl">{{ description }}</p>
+      <h1 class="overflow-hidden text-3xl font-semibold lg:text-5xl whitespace-nowrap">{{ name }}</h1>
+      <p class="text-lg lg:text-xl">{{ description }}</p>
     </motion.div>
     <motion.div
       :variants="childVariants"

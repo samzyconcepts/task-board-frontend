@@ -109,7 +109,7 @@ function handleDelete() {
         :initial="{ x: 50 }"
         :animate="{ x: 0, transition: { duration: 0.3 } }"
         :exit="{ x: 50 }"
-        class="fixed top-0 right-0 h-screen w-[630px] p-3 bg-transparent"
+        class="fixed top-0 right-0 h-screen md:w-[630px] p-3 bg-transparent"
       >
         <div class="flex flex-col h-full bg-white rounded-lg">
           <form class="h-full">
@@ -170,7 +170,7 @@ function handleDelete() {
 
               <div class="flex flex-col w-full mb-3">
                 <p class="mb-2 text-sm text-gray-400">Status</p>
-                <fieldset class="grid grid-cols-2 gap-3" role="radiogroup" aria-label="Task Status">
+                <fieldset class="grid gap-3 md:grid-cols-2" role="radiogroup" aria-label="Task Status">
                   <SelectableStatus
                     v-for="status in statusList"
                     :key="status.value"
