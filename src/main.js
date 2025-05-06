@@ -5,7 +5,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:8000/api'
+axios.defaults.baseURL = 'https://task-board-be.onrender.com/api'
 
 const app = createApp(App)
 const pinia = createPinia()
