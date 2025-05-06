@@ -1,12 +1,14 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import BoardHeader from './components/BoardHeader.vue'
 import SkeletonLoader from './components/SkeletonLoader.vue'
 import TasksContainer from './components/TasksContainer.vue'
 import { useBoardStore } from './stores/boardStore'
 import { storeToRefs } from 'pinia'
 import EditBoardModal from './components/editBoardModal.vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const boardStore = useBoardStore()
 
 const { board, loading } = storeToRefs(boardStore)
@@ -20,9 +22,7 @@ const openEditModal = () => {
   isEditModalOpen.value = true
 }
 
-onMounted(async () => {
-  let boardId = localStorage.getItem('boardId') || window.location.pathname.slice(1)
-
+const handleBoard = async (boardId) => {
   try {
     // Check if boardId is valid
     if (!boardId) {
@@ -32,14 +32,34 @@ onMounted(async () => {
       // Save to localstorage and change url
       localStorage.setItem('boardId', boardId)
       window.history.pushState({}, '', `/${boardId}`)
+      await boardStore.fetchBoard(boardId)
     } else {
-      boardStore.fetchBoard(boardId)
+      await boardStore.fetchBoard(boardId)
       localStorage.setItem('boardId', boardId)
     }
   } catch (error) {
     console.error('Error fetching board:', error)
   }
-});
+}
+
+onMounted(async () => {
+  // Reset localStorage if visiting the root url
+  if (!route.params.boardId) {
+    localStorage.removeItem("boardId");
+  }
+
+  const boardId = route.params.boardId || localStorage.getItem('boardId')
+  await handleBoard(boardId)
+})
+
+watch(
+  () => route.params.boardId,
+  async (newBoardId) => {
+    if (newBoardId) {
+      await handleBoard(newBoardId)
+    }
+  },
+)
 </script>
 
 <template>
@@ -52,7 +72,7 @@ onMounted(async () => {
 
     <div v-else-if="board">
       <BoardHeader :name="board.name" :description="board.description" @edit="openEditModal" />
-      <TasksContainer :boardId="board && board._id"/>
+      <TasksContainer :boardId="board && board._id" :key="board._id" />
       <EditBoardModal :isOpen="isEditModalOpen" @close="closeEditModal" />
     </div>
   </section>
